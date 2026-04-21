@@ -7,5 +7,14 @@
     "address": "Majri.colary    , ta. bhadravati",
     "password": "123456",
     "createdAt": "2026-04-17T20:26:55.192Z"
+  },
+  {
+    "id": "CUS1776748619894",
+    "fullName": "Test User",
+    "phone": "1234567890",
+    "email": "",
+    "address": "",
+    "password": "1234",
+    "createdAt": "2026-04-21T05:16:59.894Z"
   }
 ]

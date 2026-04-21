@@ -444,7 +444,7 @@ if (isCheckoutPage) {
         localStorage.removeItem(CART_STORAGE_KEY);
         setTimeout(() => {
           window.location.href = "index.html";
-        }, 2000);
+        }, 3000);
       }, 1500);
     });
   }

@@ -62,8 +62,32 @@
 
 .pay-now-btn {
   width: 100%;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   padding: 18px;
+  background: var(--primary);
+  color: #090e17;
+  font-weight: 800;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(196, 249, 52, 0.3);
+}
+.pay-now-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(196, 249, 52, 0.45);
+}
+.pay-now-btn:active {
+  transform: translateY(-1px);
+}
+.pay-now-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 #checkoutCartList {
