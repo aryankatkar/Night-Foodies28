@@ -10,103 +10,222 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <script>
-    (function() {
-      const AUTH_KEY = "nightFoodiesLoggedInUser";
-      const user = localStorage.getItem(AUTH_KEY);
-      if (!user) {
-        window.location.replace("login.html");
-      }
-    })();
-  </script>
+  <style>
+    .view-section {
+      display: none;
+    }
+    .view-section.active {
+      display: block;
+    }
+    .auth-toggle {
+      text-align: center;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .auth-toggle button {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0;
+    }
+    .auth-toggle button:hover {
+      text-decoration: underline;
+    }
+    #authView {
+      min-height: 100vh;
+      display: none;
+      place-items: center;
+      padding: 24px;
+    }
+    #authView.active {
+      display: grid;
+    }
+    #mainView {
+      display: none;
+    }
+    #mainView.active {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
-  <header class="top-nav">
-    <div class="brand">
-      <span class="brand-logo">N</span>
-      <div>
-        <h1>Night Foodies</h1>
-        <p>Late night delivery in minutes</p>
-      </div>
-    </div>
-
-    <label class="search-wrap">
-      <input id="searchInput" type="text" placeholder="Search for omelette, chai, cigarettes..." />
-    </label>
-
-    <div class="location">
-      <strong>Deliver to</strong>
-      <span> Majri Colony</span>
-    </div>
-
-    <button id="logoutBtn" class="logout-btn" type="button" aria-label="Logout" title="Logout">
-      <svg class="logout-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-        <path fill="currentColor" d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-      </svg>
-    </button>
-  </header>
-
-  <main class="page">
-    <section class="hero">
-      <div class="hero-card hero-main">
-        <h2>Everyday essentials delivered fast</h2>
-        <p>Fresh produce, groceries, and daily needs in minutes.</p>
-        <button type="button">Shop now</button>
-      </div>
-      <div class="hero-card hero-sale">
-        <p>Up to 35% OFF</p>
-        <h3>Weekend Snack Festival</h3>
-        <small>On chips, cookies, and beverages</small>
-      </div>
-      <div class="hero-card hero-fruits">
-        <p>Fresh Arrival</p>
-        <h3>Farm Fruits</h3>
-        <small>Starting at Rs. 79/kg</small>
-      </div>
-    </section>
-
-    <section class="categories" id="categoryRow">
-      <button class="chip active" data-category="all">All</button>
-      <button class="chip" data-category="food">Food</button>
-      <button class="chip" data-category="drinks">Drinks</button>
-      <button class="chip" data-category="cigarettes">Cigarettes</button>
-    </section>
-
-    <section class="content-grid">
-      <section>
-        <div class="section-title">
-          <h2>Popular Near You</h2>
-          <a href="#">View all</a>
+  <!-- AUTH VIEW: Login + Signup -->
+  <div id="authView" class="view-section">
+    <div class="auth-wrap" id="authWrap" style="width: min(440px, 100%);">
+      <!-- LOGIN FORM -->
+      <section id="loginPanel" class="auth-card glass">
+        <div class="brand auth-brand">
+          <span class="brand-logo">N</span>
+          <div>
+            <h1>Night Foodies</h1>
+            <p>Late night delivery in minutes</p>
+          </div>
         </div>
-        <div class="products" id="productGrid"></div>
+
+        <h2>Welcome back</h2>
+        <p class="auth-subtitle">Sign in to continue shopping</p>
+
+        <form id="loginForm" class="auth-form">
+          <label>
+            Phone Number
+            <input id="phoneInput" type="tel" placeholder="Enter 10-digit phone number" required pattern="[0-9]{10}" />
+          </label>
+          <label>
+            Password
+            <div class="password-wrapper">
+              <input id="passwordInput" type="password" placeholder="Enter password" required minlength="4" />
+              <span class="eye-btn" onclick="togglePassword('passwordInput', this)">Show</span>
+            </div>
+          </label>
+          <p id="authMessage" class="auth-message"></p>
+          <div class="auth-actions">
+            <button id="loginBtn" type="submit">Login</button>
+            <button id="showSignupBtn" type="button" class="secondary-btn">Sign Up</button>
+          </div>
+        </form>
       </section>
 
-      <aside class="cart-panel glass">
-        <h3>Your Cart</h3>
-        <p class="cart-subtitle">Quick checkout with one click</p>
-        <ul id="cartList"></ul>
-        <div class="cart-summary-costs">
-          <div class="cart-summary-row">
-            <span>Subtotal</span>
-            <strong id="cartSubtotal" class="cart-summary-strong">Rs. 0</strong>
-          </div>
-          <div class="cart-summary-row">
-            <span id="deliveryLabel">Delivery Charge</span>
-            <strong id="cartDelivery" class="cart-summary-strong">Rs. 0</strong>
+      <!-- SIGNUP FORM -->
+      <section id="signupPanel" class="auth-card glass" style="display:none;">
+        <div class="brand auth-brand">
+          <span class="brand-logo">N</span>
+          <div>
+            <h1>Night Foodies</h1>
+            <p>Late night delivery in minutes</p>
           </div>
         </div>
-        <div class="cart-total cart-total--compact">
-          <span>Total to pay</span>
-          <strong id="cartTotal">Rs. 0</strong>
-        </div>
-        <button type="button" class="checkout-btn">Proceed to Checkout</button>
-      </aside>
-    </section>
-  </main>
 
-  <button class="help-fab"
-    onclick="alert('Need Help? Contact our 24/7 delivery support at support@nightfoodies.in or Call +91-9022015583.')">?</button>
+        <h2>Create customer account</h2>
+        <p class="auth-subtitle">Fill customer details to create account</p>
+
+        <form id="signupForm" class="auth-form">
+          <label>
+            Full Name
+            <input id="fullNameInput" type="text" placeholder="Enter full name" required />
+          </label>
+          <label>
+            Phone Number
+            <input id="signupPhoneInput" type="tel" placeholder="Enter 10-digit phone number" required pattern="[0-9]{10}" />
+          </label>
+          <label>
+            Email
+            <input id="emailInput" type="email" placeholder="Enter email (optional)" />
+          </label>
+          <label>
+            Address
+            <textarea id="addressInput" rows="3" placeholder="House no, street, area"></textarea>
+          </label>
+          <label>
+            Password
+            <div class="password-wrapper">
+              <input id="signupPasswordInput" type="password" placeholder="Create password" required minlength="4" />
+              <span class="eye-btn" onclick="togglePassword('signupPasswordInput', this)">Show</span>
+            </div>
+          </label>
+
+          <p id="signupMessage" class="auth-message"></p>
+          <div class="auth-actions">
+            <button type="submit">Create Account</button>
+            <button id="showLoginBtn" type="button" class="secondary-btn">Back to Login</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- MAIN VIEW: Product Catalog -->
+  <div id="mainView" class="view-section">
+    <header class="top-nav">
+      <div class="brand">
+        <span class="brand-logo">N</span>
+        <div>
+          <h1>Night Foodies</h1>
+          <p>Late night delivery in minutes</p>
+        </div>
+      </div>
+
+      <label class="search-wrap">
+        <input id="searchInput" type="text" placeholder="Search for omelette, chai, cigarettes..." />
+      </label>
+
+      <div class="location">
+        <strong>Deliver to</strong>
+        <span> Majri Colony</span>
+      </div>
+
+      <button id="logoutBtn" class="logout-btn" type="button" aria-label="Logout" title="Logout">
+        <svg class="logout-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+        </svg>
+      </button>
+    </header>
+
+    <main class="page">
+      <section class="hero">
+        <div class="hero-card hero-main">
+          <h2>Everyday essentials delivered fast</h2>
+          <p>Fresh produce, groceries, and daily needs in minutes.</p>
+          <button type="button">Shop now</button>
+        </div>
+        <div class="hero-card hero-sale">
+          <p>Up to 35% OFF</p>
+          <h3>Weekend Snack Festival</h3>
+          <small>On chips, cookies, and beverages</small>
+        </div>
+        <div class="hero-card hero-fruits">
+          <p>Fresh Arrival</p>
+          <h3>Farm Fruits</h3>
+          <small>Starting at Rs. 79/kg</small>
+        </div>
+      </section>
+
+      <section class="categories" id="categoryRow">
+        <button class="chip active" data-category="all">All</button>
+        <button class="chip" data-category="food">Food</button>
+        <button class="chip" data-category="drinks">Drinks</button>
+        <button class="chip" data-category="cigarettes">Cigarettes</button>
+      </section>
+
+      <section class="content-grid">
+        <section>
+          <div class="section-title">
+            <h2>Popular Near You</h2>
+            <a href="#">View all</a>
+          </div>
+          <div class="products" id="productGrid"></div>
+        </section>
+
+        <aside class="cart-panel glass">
+          <h3>Your Cart</h3>
+          <p class="cart-subtitle">Quick checkout with one click</p>
+          <ul id="cartList"></ul>
+          <div class="cart-summary-costs">
+            <div class="cart-summary-row">
+              <span>Subtotal</span>
+              <strong id="cartSubtotal" class="cart-summary-strong">Rs. 0</strong>
+            </div>
+            <div class="cart-summary-row">
+              <span id="deliveryLabel">Delivery Charge</span>
+              <strong id="cartDelivery" class="cart-summary-strong">Rs. 0</strong>
+            </div>
+          </div>
+          <div class="cart-total cart-total--compact">
+            <span>Total to pay</span>
+            <strong id="cartTotal">Rs. 0</strong>
+          </div>
+          <button type="button" class="checkout-btn">Proceed to Checkout</button>
+        </aside>
+      </section>
+    </main>
+
+    <button class="help-fab"
+      onclick="alert('Need Help? Contact our 24/7 delivery support at support@nightfoodies.in or Call +91-9022015583.')">?</button>
+  </div>
 
   <script src="script.js"></script>
 </body>

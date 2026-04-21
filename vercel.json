@@ -20,14 +20,6 @@
       "dest": "/api/admin/$1.js"
     },
     {
-      "src": "/login",
-      "dest": "/login.html"
-    },
-    {
-      "src": "/signup",
-      "dest": "/signup.html"
-    },
-    {
       "src": "/checkout",
       "dest": "/checkout.html"
     },

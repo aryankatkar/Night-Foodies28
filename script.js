@@ -36,26 +36,54 @@ window.togglePassword = function(inputId, btn) {
 };
 
 const path = window.location.pathname.toLowerCase();
-const isLoginPage = path.endsWith("/login.html") || path.endsWith("/login");
-const isSignupPage = path.endsWith("/signup.html") || path.endsWith("/signup");
-const isHomePage = path.endsWith("/index.html") || path.endsWith("/") || path === "";
 const isCheckoutPage = path.endsWith("/checkout.html") || path.endsWith("/checkout");
 
 function getLoggedInUser() {
   return localStorage.getItem(AUTH_KEY);
 }
 
-function requireAuth() {
+/* ===== VIEW MANAGEMENT ===== */
+const authView = document.getElementById("authView");
+const mainView = document.getElementById("mainView");
+const loginPanel = document.getElementById("loginPanel");
+const signupPanel = document.getElementById("signupPanel");
+const authWrap = document.getElementById("authWrap");
+
+function showAuthView() {
+  if (authView) authView.classList.add("active");
+  if (mainView) mainView.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+function showMainView() {
+  if (authView) authView.classList.remove("active");
+  if (mainView) mainView.classList.add("active");
+  document.body.style.overflow = "";
+}
+
+function showLoginPanel() {
+  if (loginPanel) loginPanel.style.display = "";
+  if (signupPanel) signupPanel.style.display = "none";
+  if (authWrap) authWrap.style.width = "min(440px, 100%)";
+}
+
+function showSignupPanel() {
+  if (loginPanel) loginPanel.style.display = "none";
+  if (signupPanel) signupPanel.style.display = "";
+  if (authWrap) authWrap.style.width = "min(560px, 100%)";
+}
+
+function initView() {
   const user = getLoggedInUser();
-  if ((isHomePage || isCheckoutPage) && !user) {
-    window.location.href = "login.html";
-  }
-  if ((isLoginPage || isSignupPage) && user) {
-    window.location.href = "index.html";
+  if (user) {
+    showMainView();
+  } else {
+    showAuthView();
+    showLoginPanel();
   }
 }
 
-requireAuth();
+initView();
 
 const state = {
   category: "all",
@@ -141,16 +169,26 @@ if (loginForm && phoneInput && passwordInput && authMessage) {
       authMessage.textContent = "";
       const data = await postJson("/api/auth/login", { phone, password });
       localStorage.setItem(AUTH_KEY, data.user.phone);
-      window.location.href = "index.html";
+      showMainView();
+      renderProducts();
+      renderCart();
     } catch (error) {
       authMessage.textContent = error.message;
     }
   });
 }
 
-if (signupBtn && phoneInput && passwordInput && authMessage) {
-  signupBtn.addEventListener("click", () => {
-    window.location.href = "signup.html";
+const showSignupBtn = document.getElementById("showSignupBtn");
+if (showSignupBtn) {
+  showSignupBtn.addEventListener("click", () => {
+    showSignupPanel();
+  });
+}
+
+const showLoginBtn = document.getElementById("showLoginBtn");
+if (showLoginBtn) {
+  showLoginBtn.addEventListener("click", () => {
+    showLoginPanel();
   });
 }
 
@@ -186,16 +224,17 @@ if (signupForm && fullNameInput && signupPhoneInput && signupPasswordInput && si
   });
 }
 
-if (goLoginBtn) {
-  goLoginBtn.addEventListener("click", () => {
-    window.location.href = "login.html";
-  });
-}
+/* goLoginBtn replaced by showLoginBtn above */
 
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     localStorage.removeItem(AUTH_KEY);
-    window.location.href = "login.html";
+    state.cart = [];
+    showAuthView();
+    showLoginPanel();
+    if (authMessage) authMessage.textContent = "";
+    if (phoneInput) phoneInput.value = "";
+    if (passwordInput) passwordInput.value = "";
   });
 }
 
