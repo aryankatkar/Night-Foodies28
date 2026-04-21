@@ -99,7 +99,6 @@ const searchInput = document.getElementById("searchInput");
 const logoutBtn = document.getElementById("logoutBtn");
 const loginForm = document.getElementById("loginForm");
 const loginBtn = document.getElementById("loginBtn");
-const signupBtn = document.getElementById("signupBtn");
 const phoneInput = document.getElementById("phoneInput");
 const passwordInput = document.getElementById("passwordInput");
 const authMessage = document.getElementById("authMessage");
@@ -216,7 +215,7 @@ if (signupForm && fullNameInput && signupPhoneInput && signupPasswordInput && si
       await postJson("/api/auth/signup", { fullName, phone, email, address, password });
       signupMessage.textContent = "Account created. Redirecting to login...";
       setTimeout(() => {
-        window.location.href = "login.html";
+        showLoginPanel();
       }, 900);
     } catch (error) {
       signupMessage.textContent = error.message;
