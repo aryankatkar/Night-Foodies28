@@ -11,6 +11,10 @@
       "destination": "/api/auth/:action.js"
     },
     {
+      "source": "/api/admin/products/delete",
+      "destination": "/api/admin/products.js"
+    },
+    {
       "source": "/api/admin/:action",
       "destination": "/api/admin/:action.js"
     },
