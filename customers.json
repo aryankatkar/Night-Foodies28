@@ -16,5 +16,14 @@
     "address": "",
     "password": "1234",
     "createdAt": "2026-04-21T05:16:59.894Z"
+  },
+  {
+    "id": "CUS1776787670024",
+    "fullName": "Test User",
+    "phone": "9876543210",
+    "email": "test@test.com",
+    "address": "Test Address",
+    "password": "test123",
+    "createdAt": "2026-04-21T16:07:50.024Z"
   }
 ]

@@ -3,12 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Night Foodies</title>
+    <title>Admin - Night Foodies</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
     <style>
+      .admin-badge {
+        background: var(--danger);
+        color: #fff;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-left: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
       .admin-body { padding: 24px; }
       .admin-header {
         display: flex;
@@ -158,68 +168,158 @@
       }
       .tab-panel { display: none; }
       .tab-panel.active { display: block; }
+
+      /* View management */
+      #adminAuthView {
+        min-height: 100vh;
+        display: none;
+        place-items: center;
+        padding: 24px;
+      }
+      #adminAuthView.active { display: grid; }
+      #adminDashboardView {
+        display: none;
+      }
+      #adminDashboardView.active { display: block; }
     </style>
   </head>
-  <body class="admin-body">
-    <div class="admin-header">
-      <div class="brand">
-        <span class="brand-logo">N</span>
-        <div>
-          <h1>Night Foodies Admin</h1>
-          <p>Manage orders & products</p>
-        </div>
-      </div>
-      <div class="actions">
-        <button class="admin-btn" onclick="window.location.href='index.html'">View Site</button>
-        <button class="admin-btn" onclick="logout()">Logout</button>
-      </div>
+  <body>
+    <!-- ADMIN AUTH VIEW -->
+    <div id="adminAuthView">
+      <main class="auth-wrap">
+        <section class="auth-card glass">
+          <div class="brand auth-brand">
+            <span class="brand-logo">N</span>
+            <div>
+              <h1>Night Foodies <span class="admin-badge">Admin</span></h1>
+              <p>Admin Panel Access</p>
+            </div>
+          </div>
+
+          <h2>Admin Sign In</h2>
+          <p class="auth-subtitle">Enter credentials to access dashboard</p>
+
+          <form id="adminLoginForm" class="auth-form">
+            <label>
+              Username
+              <input id="adminUser" type="text" placeholder="Enter username" required />
+            </label>
+            <label>
+              Password
+              <div class="password-wrapper">
+                <input id="adminPass" type="password" placeholder="Enter password" required />
+                <span class="eye-btn" onclick="togglePassword('adminPass', this)">Show</span>
+              </div>
+            </label>
+            <p id="adminMessage" class="auth-message"></p>
+            <div class="auth-actions">
+              <button type="submit">Login</button>
+            </div>
+          </form>
+        </section>
+      </main>
     </div>
 
-    <div class="tab-buttons">
-      <button class="tab-btn active" onclick="switchTab('orders')">Orders</button>
-      <button class="tab-btn" onclick="switchTab('products')">Products</button>
-    </div>
-
-    <div class="admin-grid">
-      <section class="admin-card glass tab-panel active" id="ordersPanel">
-        <h2>All Orders <span class="count" id="orderCount">0</span></h2>
-        <div id="ordersList"><div class="empty-msg">Loading orders...</div></div>
-      </section>
-
-      <section class="admin-card glass tab-panel" id="productsPanel">
-        <h2>Products <span class="count" id="productCount">0</span></h2>
-        <div class="product-form">
-          <input id="pName" type="text" placeholder="Product name" />
-          <input id="pQty" type="text" placeholder="Quantity (e.g. 1 pc)" />
-          <select id="pCategory">
-            <option value="food">Food</option>
-            <option value="drinks">Drinks</option>
-            <option value="cigarettes">Cigarettes</option>
-          </select>
-          <input id="pPrice" type="number" placeholder="Price in Rs." />
-          <input id="pEmoji" type="text" placeholder="Emoji (e.g. 🍕)" />
-          <button onclick="addProduct()">Add Product</button>
+    <!-- ADMIN DASHBOARD VIEW -->
+    <div id="adminDashboardView" class="admin-body">
+      <div class="admin-header">
+        <div class="brand">
+          <span class="brand-logo">N</span>
+          <div>
+            <h1>Night Foodies Admin</h1>
+            <p>Manage orders & products</p>
+          </div>
         </div>
-        <div class="product-list" id="productList"><div class="empty-msg">Loading products...</div></div>
-      </section>
+        <div class="actions">
+          <button class="admin-btn" onclick="window.location.href='index.html'">View Site</button>
+          <button class="admin-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab('orders')">Orders</button>
+        <button class="tab-btn" onclick="switchTab('products')">Products</button>
+      </div>
+
+      <div class="admin-grid">
+        <section class="admin-card glass tab-panel active" id="ordersPanel">
+          <h2>All Orders <span class="count" id="orderCount">0</span></h2>
+          <div id="ordersList"><div class="empty-msg">Loading orders...</div></div>
+        </section>
+
+        <section class="admin-card glass tab-panel" id="productsPanel">
+          <h2>Products <span class="count" id="productCount">0</span></h2>
+          <div class="product-form">
+            <input id="pName" type="text" placeholder="Product name" />
+            <input id="pQty" type="text" placeholder="Quantity (e.g. 1 pc)" />
+            <select id="pCategory">
+              <option value="food">Food</option>
+              <option value="drinks">Drinks</option>
+              <option value="cigarettes">Cigarettes</option>
+            </select>
+            <input id="pPrice" type="number" placeholder="Price in Rs." />
+            <input id="pEmoji" type="text" placeholder="Emoji (e.g. )" />
+            <button onclick="addProduct()">Add Product</button>
+          </div>
+          <div class="product-list" id="productList"><div class="empty-msg">Loading products...</div></div>
+        </section>
+      </div>
     </div>
 
     <script>
+      window.togglePassword = function(inputId, btn) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        if (input.type === "password") {
+          input.type = "text";
+          btn.textContent = "Hide";
+        } else {
+          input.type = "password";
+          btn.textContent = "Show";
+        }
+      };
+
       const ADMIN_KEY = "nightFoodiesAdminToken";
-      if (!localStorage.getItem(ADMIN_KEY)) {
-        window.location.href = "admin-login.html";
+      const adminAuthView = document.getElementById("adminAuthView");
+      const adminDashboardView = document.getElementById("adminDashboardView");
+      const adminLoginForm = document.getElementById("adminLoginForm");
+      const adminUser = document.getElementById("adminUser");
+      const adminPass = document.getElementById("adminPass");
+      const adminMessage = document.getElementById("adminMessage");
+
+      function showAdminAuth() {
+        if (adminAuthView) adminAuthView.classList.add("active");
+        if (adminDashboardView) adminDashboardView.classList.remove("active");
       }
 
-      function logout() {
-        localStorage.removeItem(ADMIN_KEY);
-        window.location.href = "admin-login.html";
+      function showAdminDashboard() {
+        if (adminAuthView) adminAuthView.classList.remove("active");
+        if (adminDashboardView) adminDashboardView.classList.add("active");
+        loadOrders();
+        loadProducts();
       }
 
-      function switchTab(tab) {
-        document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-        document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
-        event.target.classList.add("active");
-        document.getElementById(tab + "Panel").classList.add("active");
+      function initAdminView() {
+        if (localStorage.getItem(ADMIN_KEY)) {
+          showAdminDashboard();
+        } else {
+          showAdminAuth();
+        }
+      }
+
+      initAdminView();
+
+      async function postJson(url, payload) {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const raw = await res.text();
+        let data = {};
+        try { data = raw ? JSON.parse(raw) : {}; } catch (e) { data = { message: raw }; }
+        if (!res.ok) throw new Error(data.message || "Request failed.");
+        return data;
       }
 
       async function getJson(url) {
@@ -229,15 +329,36 @@
         return data;
       }
 
-      async function postJson(url, payload) {
-        const res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+      if (adminLoginForm) {
+        adminLoginForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          adminMessage.textContent = "";
+          try {
+            const data = await postJson("/api/admin/login", {
+              username: adminUser.value.trim(),
+              password: adminPass.value.trim(),
+            });
+            localStorage.setItem(ADMIN_KEY, data.token);
+            showAdminDashboard();
+          } catch (err) {
+            adminMessage.textContent = err.message;
+          }
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message);
-        return data;
+      }
+
+      function logout() {
+        localStorage.removeItem(ADMIN_KEY);
+        showAdminAuth();
+        if (adminUser) adminUser.value = "";
+        if (adminPass) adminPass.value = "";
+        if (adminMessage) adminMessage.textContent = "";
+      }
+
+      function switchTab(tab) {
+        document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+        event.target.classList.add("active");
+        document.getElementById(tab + "Panel").classList.add("active");
       }
 
       async function loadOrders() {
@@ -324,9 +445,6 @@
           alert(e.message);
         }
       }
-
-      loadOrders();
-      loadProducts();
     </script>
   </body>
 </html>

@@ -26,10 +26,6 @@
     {
       "src": "/admin",
       "dest": "/admin.html"
-    },
-    {
-      "src": "/admin-login",
-      "dest": "/admin-login.html"
     }
   ],
   "env": {
