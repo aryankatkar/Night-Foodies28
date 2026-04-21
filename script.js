@@ -35,10 +35,11 @@ window.togglePassword = function(inputId, btn) {
   }
 };
 
-const isLoginPage = window.location.pathname.toLowerCase().endsWith("/login.html");
-const isSignupPage = window.location.pathname.toLowerCase().endsWith("/signup.html");
-const isHomePage = window.location.pathname.toLowerCase().endsWith("/index.html") || window.location.pathname.endsWith("/");
-const isCheckoutPage = window.location.pathname.toLowerCase().endsWith("/checkout.html");
+const path = window.location.pathname.toLowerCase();
+const isLoginPage = path.endsWith("/login.html") || path.endsWith("/login");
+const isSignupPage = path.endsWith("/signup.html") || path.endsWith("/signup");
+const isHomePage = path.endsWith("/index.html") || path.endsWith("/") || path === "";
+const isCheckoutPage = path.endsWith("/checkout.html") || path.endsWith("/checkout");
 
 function getLoggedInUser() {
   return localStorage.getItem(AUTH_KEY);

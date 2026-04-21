@@ -6,14 +6,18 @@
       "maxDuration": 10
     }
   },
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/auth/:action(send-otp|verify-otp|login|signup)",
-      "destination": "/api/auth/:action.js"
+      "src": "/api/auth/(.*)",
+      "dest": "/api/auth/$1.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "/$1"
+      "src": "/(login|signup|checkout)",
+      "dest": "/$1.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ],
   "env": {

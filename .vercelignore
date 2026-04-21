@@ -1,0 +1,8 @@
+server.js
+customers.json
+database.sqlite
+.env
+.env.local
+*.log
+node_modules/
+.vercel
