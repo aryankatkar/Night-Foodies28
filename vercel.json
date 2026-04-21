@@ -5,34 +5,41 @@
       "maxDuration": 10
     }
   },
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/auth/:action",
-      "destination": "/api/auth/:action.js"
+      "handle": "filesystem"
     },
     {
-      "source": "/api/admin/products/delete",
-      "destination": "/api/admin/products.js"
+      "src": "/api/auth/(.*)",
+      "dest": "/api/auth/$1.js"
     },
     {
-      "source": "/api/admin/:action",
-      "destination": "/api/admin/:action.js"
+      "src": "/api/admin/products/delete",
+      "dest": "/api/admin/products.js"
     },
     {
-      "source": "/login",
-      "destination": "/login.html"
+      "src": "/api/admin/(.*)",
+      "dest": "/api/admin/$1.js"
     },
     {
-      "source": "/signup",
-      "destination": "/signup.html"
+      "src": "/login",
+      "dest": "/login.html"
     },
     {
-      "source": "/checkout",
-      "destination": "/checkout.html"
+      "src": "/signup",
+      "dest": "/signup.html"
     },
     {
-      "source": "/admin",
-      "destination": "/admin.html"
+      "src": "/checkout",
+      "dest": "/checkout.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/admin.html"
+    },
+    {
+      "src": "/admin-login",
+      "dest": "/admin-login.html"
     }
   ],
   "env": {
