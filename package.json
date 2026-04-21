@@ -1,0 +1,17 @@
+{
+  "name": "night-foodies",
+  "version": "1.0.0",
+  "description": "Night Foodies — late-night delivery web app with auth",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo 'Static files only, no build step required'"
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.22.1"
+  }
+}

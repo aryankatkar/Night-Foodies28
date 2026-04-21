@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="Night Foodies" />
+    <title>Sign Up - Night Foodies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-wrap auth-wrap-wide">
+      <section class="auth-card glass">
+        <div class="brand auth-brand">
+          <span class="brand-logo">N</span>
+          <div>
+            <h1>Night Foodies</h1>
+            <p>Late night delivery in minutes</p>
+          </div>
+        </div>
+
+        <h2>Create customer account</h2>
+        <p class="auth-subtitle">Fill customer details to create account</p>
+
+        <form id="signupForm" class="auth-form">
+          <label>
+            Full Name
+            <input id="fullNameInput" type="text" placeholder="Enter full name" required />
+          </label>
+          <label>
+            Phone Number
+            <input id="signupPhoneInput" type="tel" placeholder="Enter 10-digit phone number" required pattern="[0-9]{10}" />
+          </label>
+          <label>
+            Email
+            <input id="emailInput" type="email" placeholder="Enter email (optional)" />
+          </label>
+          <label>
+            Address
+            <textarea id="addressInput" rows="3" placeholder="House no, street, area"></textarea>
+          </label>
+          <label>
+            Password
+            <div class="password-wrapper">
+              <input id="signupPasswordInput" type="password" placeholder="Create password" required minlength="4" />
+              <span class="eye-btn" onclick="togglePassword('signupPasswordInput', this)">Show</span>
+            </div>
+          </label>
+
+          <p id="signupMessage" class="auth-message"></p>
+          <div class="auth-actions">
+            <button type="submit">Create Account</button>
+            <button id="goLoginBtn" type="button" class="secondary-btn">Go to Login</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

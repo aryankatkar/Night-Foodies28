@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="Night Foodies" />
+    <title>Checkout | Night Foodies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="checkout.css" />
+  </head>
+  <body class="checkout-body">
+    <header class="top-nav">
+      <div class="brand">
+        <span class="brand-logo">N</span>
+        <div>
+          <h1>Night Foodies</h1>
+          <p>Secure Checkout</p>
+        </div>
+      </div>
+      <div class="checkout-nav-spacer"></div>
+      <button id="cancelCheckoutBtn" class="logout-btn checkout-cancel-btn" type="button">Cancel</button>
+    </header>
+
+    <main class="page checkout-page">
+      <div class="checkout-grid">
+        <section class="checkout-form glass">
+          <h2>Select Payment Method</h2>
+          <p class="auth-subtitle">All transactions are secure and encrypted.</p>
+          
+          <div class="payment-methods" id="paymentOptions">
+            <label class="payment-option active">
+              <input type="radio" name="payment" value="upi" checked>
+              <div class="pay-info">
+                <strong>UPI / GPay</strong>
+                <small>Instant payment</small>
+              </div>
+            </label>
+
+
+
+            <label class="payment-option">
+              <input type="radio" name="payment" value="cod">
+              <div class="pay-info">
+                <strong>Cash on Delivery</strong>
+                <small>Pay at your door</small>
+              </div>
+            </label>
+          </div>
+
+          <div id="checkoutMessage" class="auth-message"></div>
+          
+          <button id="payNowBtn" class="checkout-btn pay-now-btn">Pay Now</button>
+        </section>
+
+        <aside class="cart-panel glass cart-panel--static">
+          <h3>Order Summary</h3>
+          <p class="cart-subtitle">Review your items before buying</p>
+          <ul id="checkoutCartList"></ul>
+          <div class="cart-summary-costs">
+            <div class="cart-summary-row">
+              <span>Subtotal</span>
+              <strong id="checkoutCartSubtotal" class="cart-summary-strong">Rs. 0</strong>
+            </div>
+            <div class="cart-summary-row">
+              <span id="checkoutDeliveryLabel">Delivery Charge</span>
+              <strong id="checkoutCartDelivery" class="cart-summary-strong">Rs. 0</strong>
+            </div>
+          </div>
+          <div class="cart-total cart-total--compact">
+            <span>Total to pay</span>
+            <strong id="checkoutCartTotal">Rs. 0</strong>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <button class="help-fab" onclick="alert('Need Help? Contact our 24/7 delivery support at support@nightfoodies.in or Call +91-9876543210.')">?</button>
+
+    <script src="script.js"></script>
+  </body>
+</html>

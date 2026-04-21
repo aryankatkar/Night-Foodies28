@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="Night Foodies" />
+    <title>Login - Night Foodies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-wrap">
+      <section class="auth-card glass">
+        <div class="brand auth-brand">
+          <span class="brand-logo">N</span>
+          <div>
+            <h1>Night Foodies</h1>
+            <p>Late night delivery in minutes</p>
+          </div>
+        </div>
+
+        <h2>Welcome back</h2>
+        <p class="auth-subtitle">Sign in to continue shopping</p>
+
+        <form id="loginForm" class="auth-form">
+          <label>
+            Phone Number
+            <input id="phoneInput" type="tel" placeholder="Enter 10-digit phone number" required pattern="[0-9]{10}" />
+          </label>
+          <label>
+            Password
+            <div class="password-wrapper">
+              <input id="passwordInput" type="password" placeholder="Enter password" required minlength="4" />
+              <span class="eye-btn" onclick="togglePassword('passwordInput', this)">Show</span>
+            </div>
+          </label>
+          <p id="authMessage" class="auth-message"></p>
+          <div class="auth-actions">
+            <button id="loginBtn" type="submit">Login</button>
+            <button id="signupBtn" type="button" class="secondary-btn">Sign Up</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
