@@ -1,5 +1,7 @@
 server.js
 customers.json
+orders.json
+products.json
 database.sqlite
 .env
 .env.local

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Night Foodies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .admin-badge {
+        background: var(--danger);
+        color: #fff;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-left: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+    </style>
+  </head>
+  <body class="auth-body">
+    <main class="auth-wrap">
+      <section class="auth-card glass">
+        <div class="brand auth-brand">
+          <span class="brand-logo">N</span>
+          <div>
+            <h1>Night Foodies <span class="admin-badge">Admin</span></h1>
+            <p>Admin Panel Access</p>
+          </div>
+        </div>
+
+        <h2>Admin Sign In</h2>
+        <p class="auth-subtitle">Enter credentials to access dashboard</p>
+
+        <form id="adminLoginForm" class="auth-form">
+          <label>
+            Username
+            <input id="adminUser" type="text" placeholder="Enter username" required />
+          </label>
+          <label>
+            Password
+            <div class="password-wrapper">
+              <input id="adminPass" type="password" placeholder="Enter password" required />
+              <span class="eye-btn" onclick="togglePassword('adminPass', this)">Show</span>
+            </div>
+          </label>
+          <p id="adminMessage" class="auth-message"></p>
+          <div class="auth-actions">
+            <button type="submit">Login</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      window.togglePassword = function(inputId, btn) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        if (input.type === "password") {
+          input.type = "text";
+          btn.textContent = "Hide";
+        } else {
+          input.type = "password";
+          btn.textContent = "Show";
+        }
+      };
+
+      const ADMIN_KEY = "nightFoodiesAdminToken";
+      const adminLoginForm = document.getElementById("adminLoginForm");
+      const adminUser = document.getElementById("adminUser");
+      const adminPass = document.getElementById("adminPass");
+      const adminMessage = document.getElementById("adminMessage");
+
+      if (localStorage.getItem(ADMIN_KEY)) {
+        window.location.href = "admin.html";
+      }
+
+      async function postJson(url, payload) {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Request failed.");
+        return data;
+      }
+
+      adminLoginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        adminMessage.textContent = "";
+        try {
+          const data = await postJson("/api/admin/login", {
+            username: adminUser.value.trim(),
+            password: adminPass.value.trim(),
+          });
+          localStorage.setItem(ADMIN_KEY, data.token);
+          window.location.href = "admin.html";
+        } catch (err) {
+          adminMessage.textContent = err.message;
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,23 +1,34 @@
 {
   "version": 2,
-  "name": "night-foodies",
   "functions": {
     "api/**/*.js": {
       "maxDuration": 10
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/auth/(.*)",
-      "dest": "/api/auth/$1.js"
+      "source": "/api/auth/:action",
+      "destination": "/api/auth/:action.js"
     },
     {
-      "src": "/(login|signup|checkout)",
-      "dest": "/$1.html"
+      "source": "/api/admin/:action",
+      "destination": "/api/admin/:action.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/signup",
+      "destination": "/signup.html"
+    },
+    {
+      "source": "/checkout",
+      "destination": "/checkout.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
     }
   ],
   "env": {

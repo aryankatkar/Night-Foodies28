@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Night Foodies — late-night delivery web app with auth",
   "scripts": {
-    "start": "node server.js",
-    "build": "echo 'Static files only, no build step required'"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=18.x"

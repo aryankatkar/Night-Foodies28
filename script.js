@@ -432,14 +432,31 @@ if (isCheckoutPage) {
   }
 
   if (payNowBtn && checkoutMessage) {
-    payNowBtn.addEventListener("click", () => {
+    payNowBtn.addEventListener("click", async () => {
       checkoutMessage.style.color = "var(--primary)";
       checkoutMessage.textContent = "Processing payment...";
       payNowBtn.disabled = true;
       payNowBtn.textContent = "Please wait...";
 
+      const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || "cod";
+      const userPhone = localStorage.getItem(AUTH_KEY) || "";
+
+      try {
+        await postJson("/api/admin/orders", {
+          customerPhone: userPhone,
+          customerName: "Customer",
+          customerAddress: "",
+          items: savedCart,
+          subtotal: subtotal,
+          deliveryFee: delivery.fee,
+          total: subtotal + delivery.fee,
+          paymentMethod: paymentMethod,
+        });
+      } catch (e) {
+        console.error("Order save failed:", e);
+      }
+
       setTimeout(() => {
-        // Show success popup
         alert("Your order has been placed!");
         checkoutMessage.textContent = "Order Placed Successfully! Redirecting...";
         localStorage.removeItem(CART_STORAGE_KEY);

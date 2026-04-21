@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Night Foodies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .admin-body { padding: 24px; }
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--surface-border);
+      }
+      .admin-header h1 { font-size: 1.8rem; }
+      .admin-header .actions { display: flex; gap: 12px; }
+      .admin-btn {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--danger);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        padding: 10px 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .admin-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      @media (max-width: 900px) {
+        .admin-grid { grid-template-columns: 1fr; }
+      }
+      .admin-card {
+        padding: 24px;
+      }
+      .admin-card h2 {
+        font-size: 1.3rem;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .admin-card h2 .count {
+        background: var(--primary);
+        color: #090e17;
+        font-size: 0.8rem;
+        padding: 2px 10px;
+        border-radius: 999px;
+      }
+      .order-item {
+        padding: 14px;
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.4);
+        margin-bottom: 10px;
+        border: 1px solid var(--surface-border);
+      }
+      .order-item-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .order-id { font-weight: 700; color: var(--primary); }
+      .order-status {
+        font-size: 0.75rem;
+        padding: 2px 10px;
+        border-radius: 999px;
+        background: rgba(196, 249, 52, 0.15);
+        color: var(--primary);
+        text-transform: uppercase;
+      }
+      .order-details {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .order-total {
+        margin-top: 8px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .product-form {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .product-form input, .product-form select {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid var(--surface-border);
+        border-radius: 10px;
+        padding: 12px;
+        color: var(--text);
+        font-family: var(--font-body);
+      }
+      .product-form input:focus, .product-form select:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+      .product-form button {
+        background: var(--primary);
+        color: #090e17;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .product-list {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .product-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--surface-border);
+      }
+      .product-row button {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--danger);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        padding: 4px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+      .empty-msg {
+        color: var(--muted);
+        text-align: center;
+        padding: 40px 0;
+        font-style: italic;
+      }
+      .tab-buttons {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .tab-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--surface-border);
+        color: var(--text);
+        padding: 8px 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .tab-btn.active {
+        background: rgba(196, 249, 52, 0.15);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .tab-panel { display: none; }
+      .tab-panel.active { display: block; }
+    </style>
+  </head>
+  <body class="admin-body">
+    <div class="admin-header">
+      <div class="brand">
+        <span class="brand-logo">N</span>
+        <div>
+          <h1>Night Foodies Admin</h1>
+          <p>Manage orders & products</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="admin-btn" onclick="window.location.href='index.html'">View Site</button>
+        <button class="admin-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="switchTab('orders')">Orders</button>
+      <button class="tab-btn" onclick="switchTab('products')">Products</button>
+    </div>
+
+    <div class="admin-grid">
+      <section class="admin-card glass tab-panel active" id="ordersPanel">
+        <h2>All Orders <span class="count" id="orderCount">0</span></h2>
+        <div id="ordersList"><div class="empty-msg">Loading orders...</div></div>
+      </section>
+
+      <section class="admin-card glass tab-panel" id="productsPanel">
+        <h2>Products <span class="count" id="productCount">0</span></h2>
+        <div class="product-form">
+          <input id="pName" type="text" placeholder="Product name" />
+          <input id="pQty" type="text" placeholder="Quantity (e.g. 1 pc)" />
+          <select id="pCategory">
+            <option value="food">Food</option>
+            <option value="drinks">Drinks</option>
+            <option value="cigarettes">Cigarettes</option>
+          </select>
+          <input id="pPrice" type="number" placeholder="Price in Rs." />
+          <input id="pEmoji" type="text" placeholder="Emoji (e.g. 🍕)" />
+          <button onclick="addProduct()">Add Product</button>
+        </div>
+        <div class="product-list" id="productList"><div class="empty-msg">Loading products...</div></div>
+      </section>
+    </div>
+
+    <script>
+      const ADMIN_KEY = "nightFoodiesAdminToken";
+      if (!localStorage.getItem(ADMIN_KEY)) {
+        window.location.href = "admin-login.html";
+      }
+
+      function logout() {
+        localStorage.removeItem(ADMIN_KEY);
+        window.location.href = "admin-login.html";
+      }
+
+      function switchTab(tab) {
+        document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+        event.target.classList.add("active");
+        document.getElementById(tab + "Panel").classList.add("active");
+      }
+
+      async function getJson(url) {
+        const res = await fetch(url, { headers: { "Content-Type": "application/json" } });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
+        return data;
+      }
+
+      async function postJson(url, payload) {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
+        return data;
+      }
+
+      async function loadOrders() {
+        try {
+          const data = await getJson("/api/admin/orders");
+          const list = document.getElementById("ordersList");
+          const count = document.getElementById("orderCount");
+          count.textContent = data.orders.length;
+          if (!data.orders.length) {
+            list.innerHTML = '<div class="empty-msg">No orders yet.</div>';
+            return;
+          }
+          list.innerHTML = data.orders.map((o) => `
+            <div class="order-item">
+              <div class="order-item-header">
+                <span class="order-id">${o.id}</span>
+                <span class="order-status">${o.status}</span>
+              </div>
+              <div class="order-details">
+                <strong>${o.customerName || "Guest"}</strong> (${o.customerPhone})<br/>
+                ${o.customerAddress || "No address"}<br/>
+                Items: ${o.items.map((i) => i.name + " x" + (i.cartQty || 1)).join(", ")}<br/>
+                Payment: ${o.paymentMethod.toUpperCase()}
+              </div>
+              <div class="order-total">Total: Rs. ${o.total}</div>
+            </div>
+          `).join("");
+        } catch (e) {
+          document.getElementById("ordersList").innerHTML = '<div class="empty-msg">Error loading orders.</div>';
+        }
+      }
+
+      async function loadProducts() {
+        try {
+          const data = await getJson("/api/admin/products");
+          const list = document.getElementById("productList");
+          const count = document.getElementById("productCount");
+          count.textContent = data.products.length;
+          if (!data.products.length) {
+            list.innerHTML = '<div class="empty-msg">No custom products. Default products are active.</div>';
+            return;
+          }
+          list.innerHTML = data.products.map((p) => `
+            <div class="product-row">
+              <span>${p.emoji} ${p.name} - Rs. ${p.price}</span>
+              <button onclick="removeProduct(${p.id})">Delete</button>
+            </div>
+          `).join("");
+        } catch (e) {
+          document.getElementById("productList").innerHTML = '<div class="empty-msg">Error loading products.</div>';
+        }
+      }
+
+      async function addProduct() {
+        const payload = {
+          name: document.getElementById("pName").value.trim(),
+          qty: document.getElementById("pQty").value.trim(),
+          category: document.getElementById("pCategory").value,
+          price: Number(document.getElementById("pPrice").value),
+          emoji: document.getElementById("pEmoji").value.trim(),
+        };
+        if (!payload.name || !payload.price) {
+          alert("Please enter product name and price.");
+          return;
+        }
+        try {
+          await postJson("/api/admin/products", payload);
+          document.getElementById("pName").value = "";
+          document.getElementById("pQty").value = "";
+          document.getElementById("pPrice").value = "";
+          document.getElementById("pEmoji").value = "";
+          loadProducts();
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+
+      async function removeProduct(id) {
+        if (!confirm("Delete this product?")) return;
+        try {
+          await postJson("/api/admin/products/delete", { id });
+          loadProducts();
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+
+      loadOrders();
+      loadProducts();
+    </script>
+  </body>
+</html>
