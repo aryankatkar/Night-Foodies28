@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: night-foodies
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: DB_DRIVER
+        value: file
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    disk:
+      name: data
+      mountPath: /opt/render/project/src
+      sizeGB: 1

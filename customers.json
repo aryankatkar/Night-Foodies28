@@ -25,5 +25,14 @@
     "address": "Test Address",
     "password": "test123",
     "createdAt": "2026-04-21T16:07:50.024Z"
+  },
+  {
+    "id": "CUS1776790292662",
+    "fullName": "Raj Kumar",
+    "phone": "9998887776",
+    "email": "raj@test.com",
+    "address": "123 Main Street",
+    "password": "raj123",
+    "createdAt": "2026-04-21T16:51:32.662Z"
   }
 ]
